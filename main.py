@@ -51,8 +51,8 @@ def login(driver):
             and password_input 
             and sign_in_btn
         ):
-            username_input.send_keys("morvinian@gmail.com")
-            password_input.send_keys("12345678")
+            username_input.send_keys(os.getenv('EMAIL'))
+            password_input.send_keys(os.getenv('PASSWORD'))
             sign_in_btn.click()
 
         else:
