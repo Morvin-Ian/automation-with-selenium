@@ -1,0 +1,13 @@
+[project]
+name = "automation-with-selenium"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+reportMissingImports = "error"
+reportMissingTypeStubs = false
+dependencies = [
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.5",
+    "selenium>=4.35.0",
+]

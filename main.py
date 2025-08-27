@@ -24,35 +24,36 @@ else:
     driver_options.add_argument("--headless")
 
 
-def wait_for_elements (driver, by, element_identifier, timeout = 15):
+def wait_for_elements(driver, by, element_identifier, timeout=15):
     try:
-        WebDriverWait(driver, timeout).until(ec.visibility_of_element_located((by, element_identifier)))
+        WebDriverWait(driver, timeout).until(
+            ec.visibility_of_element_located((by, element_identifier))
+        )
         print(f"{element_identifier} found and loaded")
     except TimeoutException:
         print(f"Timeout waiting for {element_identifier}")
         return None
-    
+
     return driver.find_element(by, element_identifier)
 
 
 def login(driver):
-    driver.get(os.getenv('URL'))
+    driver.get(os.getenv("URL"))
+
     accept_cookies_btn = wait_for_elements(driver, By.ID, "onetrust-accept-btn-handler")
 
     if accept_cookies_btn:
         accept_cookies_btn.click()
-        
+
         password_input = wait_for_elements(driver, By.ID, "loginLoginWrap")
-        username_input = wait_for_elements(driver, By.XPATH, '//input[@type="email"][@name="login"]')  
+        username_input = wait_for_elements(
+            driver, By.XPATH, '//input[@type="email"][@name="login"]'
+        )
         sign_in_btn = wait_for_elements(driver, By.XPATH, '//button[@type="submit"]')
-        
-        if (
-            username_input 
-            and password_input 
-            and sign_in_btn
-        ):
-            username_input.send_keys(os.getenv('EMAIL'))
-            password_input.send_keys(os.getenv('PASSWORD'))
+
+        if username_input and password_input and sign_in_btn:
+            username_input.send_keys(os.getenv("EMAIL"))
+            password_input.send_keys(os.getenv("PASSWORD"))
             sign_in_btn.click()
 
         else:
@@ -60,17 +61,20 @@ def login(driver):
     else:
         print("Accept cookies Btn not found")
 
+
 def main_config():
-    service= Service(driver_path)
-    driver = webdriver.Chrome(service = service, options = driver_options)
-    
+    service = Service(driver_path)
+    driver = webdriver.Chrome(service=service, options=driver_options)
+
     try:
-        login(driver)
+        # login(driver)
+        driver.get(os.getenv("MATCHES_URL", ""))
     except WebDriverException as e:
         print(f"An error occurred: {e}")
     finally:
         if not debbuging:
             driver.quit()
-            
+
+
 if __name__ == "__main__":
     main_config()
